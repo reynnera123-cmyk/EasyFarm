@@ -8,7 +8,6 @@ type ThemeOption = {
   id: string;
   nome: string;
   descricao: string;
-  badge?: string; // <- permite existir ou não
 };
 
 const THEMES: ThemeOption[] = [
@@ -16,7 +15,6 @@ const THEMES: ThemeOption[] = [
     id: "easyfarm",
     nome: "EasyFarm Verde",
     descricao: "Tema oficial, baseado no verde da granja.",
-    badge: "Padrão",
   },
   {
     id: "corporate",
