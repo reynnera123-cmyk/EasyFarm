@@ -8,7 +8,7 @@ import {
   ReactNode,
 } from "react";
 
-type ThemeName = "easyfarm" | "corporate" | "agro" | "premium";
+export type ThemeName = "easyfarm" | "corporate" | "agro" | "premium";
 type Mode = "light" | "dark";
 
 type ThemeContextType = {
