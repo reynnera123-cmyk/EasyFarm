@@ -8,11 +8,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Badge } from "./components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
-import { Textarea } from "./components/ui/textarea";
 import { Switch } from "./components/ui/switch";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./components/ui/sheet";
 import { Warehouse, Egg, DollarSign, Settings, Sun, Moon, Home, BarChart3, Plus, Edit, AlertTriangle, TrendingUp, Download, LogOut, Clock, Info, Menu, Mail, ArrowLeft, CheckCircle2, Ruler, Users as UsersIcon, FileText, PieChart, TrendingDown, ShoppingCart, Receipt, Bird, Sprout, Phone } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
+
 import { Toaster } from "./components/ui/sonner";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
