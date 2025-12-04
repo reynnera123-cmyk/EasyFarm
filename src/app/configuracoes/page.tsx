@@ -4,7 +4,14 @@ import { useThemeEasyFarm } from "@/lib/theme";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
 
-const THEMES = [
+type ThemeOption = {
+  id: string;
+  nome: string;
+  descricao: string;
+  badge?: string; // <- permite existir ou não
+};
+
+const THEMES: ThemeOption[] = [
   {
     id: "easyfarm",
     nome: "EasyFarm Verde",
@@ -26,7 +33,7 @@ const THEMES = [
     nome: "Premium Cinza",
     descricao: "Estilo mais neutro e minimalista.",
   },
-] as const;
+];
 
 export default function ConfiguracoesPage() {
   const { theme, mode, setTheme, toggleMode } = useThemeEasyFarm();
@@ -36,16 +43,12 @@ export default function ConfiguracoesPage() {
     <div className="min-h-screen p-6 space-y-6">
 
       {/* BOTÃO VOLTAR */}
-      <button
-        onClick={() => router.back()}
-        className="inline-flex items-center gap-2 text-sm text-muted hover:text-foreground mb-3"
-      >
-        <ArrowLeft size={18} />
-        Voltar
-      </button>
+
 
       <h1 className="text-2xl font-bold mb-2">Configurações</h1>
       <h2 className="text-lg font-semibold">Aparência</h2>
+  
+ 
 
       {/* modo claro/escuro */}
       <div className="card-easy p-4 mb-4 flex items-center justify-between">
@@ -59,6 +62,13 @@ export default function ConfiguracoesPage() {
         <button onClick={toggleMode} className="btn-primary text-sm">
           Alternar para {mode === "light" ? "modo escuro" : "modo claro"}
         </button>
+                  <button
+        onClick={() => router.back()}
+        className="btn-primary text-xs flex items-center gap-1"
+      >
+        <ArrowLeft size={18} />
+        Voltar
+      </button>
       </div>
 
       {/* escolha de tema */}
@@ -70,7 +80,7 @@ export default function ConfiguracoesPage() {
             <button
               key={t.id}
               type="button"
-              onClick={() => setTheme(t.id as any)}
+              onClick={() => setTheme(t.id)}
               className={`text-left border rounded-xl px-4 py-3 transition-colors ${
                 theme === t.id
                   ? "border-(--color-accent) bg-(--color-accent-soft)"
@@ -79,12 +89,14 @@ export default function ConfiguracoesPage() {
             >
               <div className="flex items-center justify-between mb-1">
                 <span className="font-semibold">{t.nome}</span>
-                {t.badge && (
+
+                {t.badge ? (
                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-(--color-accent-soft) text-(--color-accent-strong)">
                     {t.badge}
                   </span>
-                )}
+                ) : null}
               </div>
+
               <p className="text-xs text-muted">{t.descricao}</p>
             </button>
           ))}
