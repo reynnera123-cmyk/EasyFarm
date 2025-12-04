@@ -7,11 +7,15 @@ type ColunaPDF = {
   largura: number;
 };
 
+type LinhaTabela = {
+  [key: string]: unknown;
+};
+
 type GerarPDFBaseParams = {
   titulo: string;
   subTitulo: string;
   fazenda: string;
-  dados: any[];
+  dados: LinhaTabela[];
   colunas: ColunaPDF[];
 };
 
@@ -94,22 +98,6 @@ export async function gerarPDFBase({
   y -= 30;
 
   // FUNÇÃO PARA NOVA PÁGINA
-  const novaPagina = () => {
-    page = pdf.addPage([pageWidth, pageHeight]);
-    y = pageHeight - 60;
-
-    page.drawText(`Relatório: ${titulo}`, {
-      x: margemX,
-      y,
-      size: 14,
-      font: fontBold,
-    });
-
-    y -= 25;
-    desenharCabecalhoTabela();
-  };
-
-  // CABEÇALHO TABELA
   const desenharCabecalhoTabela = () => {
     let x = margemX;
 
@@ -134,6 +122,21 @@ export async function gerarPDFBase({
     });
 
     y -= 12;
+  };
+
+  const novaPagina = () => {
+    page = pdf.addPage([pageWidth, pageHeight]);
+    y = pageHeight - 60;
+
+    page.drawText(`Relatório: ${titulo}`, {
+      x: margemX,
+      y,
+      size: 14,
+      font: fontBold,
+    });
+
+    y -= 25;
+    desenharCabecalhoTabela();
   };
 
   // cabeçalho da planilha
@@ -178,10 +181,14 @@ export async function gerarPDFBase({
 
   // FINALIZAÇÃO (download)
   const pdfBytes = await pdf.save();
-  const blob = new Blob([pdfBytes], { type: "application/pdf" });
-  const url = window.URL.createObjectURL(blob);
 
+  // cria um Uint8Array "seguro" para o Blob (resolve o erro de ArrayBufferLike)
+  const safeBytes = Uint8Array.from(pdfBytes);
+  const blob = new Blob([safeBytes], { type: "application/pdf" });
+
+  const url = window.URL.createObjectURL(blob);
   const link = document.createElement("a");
+
   link.href = url;
   link.setAttribute("download", `${titulo}.pdf`);
   link.setAttribute("target", "_blank");

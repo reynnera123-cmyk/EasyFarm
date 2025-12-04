@@ -6348,3 +6348,35 @@ I1204 14:51:38.289839    7716 dev.go:105] Listening on address (HTTP + gRPC): 12
  {"metadata":{"emulator":{"name":"dataconnect"},"message":"E1204 14:54:18.257928    7716 watch.go:31] Failed to load config from \"c:\\\\Projetos\\\\EasyFarm\\\\easyfarm\\\\dataconnect\": could not find dataconnect.yaml in `c:\\Projetos\\EasyFarm\\easyfarm\\dataconnect`\n"}}
 [info] [Firebase Plugin] Stopping Data Connect toolkit
 [warn] !  Data Connect Emulator has exited upon receiving signal: SIGINT 
+[debug] [2025-12-04T20:36:34.404Z] [Firebase Plugin] Activating Firebase extension.
+[debug] [2025-12-04T20:36:39.563Z] [Firebase Plugin] requireAuthWrapper
+[debug] [2025-12-04T20:36:39.566Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-12-04T20:36:39.567Z] > authorizing via signed-in user (reynnerdutra19@gmail.com)
+[debug] [2025-12-04T20:36:39.569Z] Checked if tokens are valid: false, expires at: 1764880748815
+[debug] [2025-12-04T20:36:39.570Z] Checked if tokens are valid: false, expires at: 1764880748815
+[debug] [2025-12-04T20:36:39.570Z] > refreshing access token with scopes: []
+[debug] [2025-12-04T20:36:39.571Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-04T20:36:39.572Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-04T20:36:39.584Z] [Firebase Plugin] VSCode notification server listening on port 40001
+[info] [Firebase Plugin] Starting Data Connect toolkit (version 2.17.0) on port 50001
+[debug] [2025-12-04T20:36:40.161Z] 'fdc build' failed with error: Unable to build your Data Connect schema and connectors (exit code 1): E1204 17:36:40.149509   19776 cmd.go:43] Error loading data connect config: could not find dataconnect.yaml in `c:\Projetos\EasyFarm\easyfarm\dataconnect`
+ {"metadata":{"emulator":{"name":"dataconnect"},"message":"'fdc build' failed with error: Unable to build your Data Connect schema and connectors (exit code 1): E1204 17:36:40.149509   19776 cmd.go:43] Error loading data connect config: could not find dataconnect.yaml in `c:\\Projetos\\EasyFarm\\easyfarm\\dataconnect`\n"}}
+[debug] [2025-12-04T20:36:40.162Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"dataconnect"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2025-12-04T20:36:40.162Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"dataconnect"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2025-12-04T20:36:40.162Z] Starting Data Connect Emulator with command {"binary":"C:\\Users\\REYNNER SILVA\\.cache\\firebase\\emulators\\dataconnect-emulator-2.17.0.exe","args":["--logtostderr","-v=2","dev","--listen=localhost:50001","--config_dir=c:\\Projetos\\EasyFarm\\easyfarm\\dataconnect","--enable_output_schema_extensions=true","--enable_output_generated_sdk=true"],"optionalArgs":["listen","config_dir","enable_output_schema_extensions","enable_output_generated_sdk"],"joinArgs":true,"shell":false,"port":9399} {"metadata":{"emulator":{"name":"dataconnect"},"message":"Starting Data Connect Emulator with command {\"binary\":\"C:\\\\Users\\\\REYNNER SILVA\\\\.cache\\\\firebase\\\\emulators\\\\dataconnect-emulator-2.17.0.exe\",\"args\":[\"--logtostderr\",\"-v=2\",\"dev\",\"--listen=localhost:50001\",\"--config_dir=c:\\\\Projetos\\\\EasyFarm\\\\easyfarm\\\\dataconnect\",\"--enable_output_schema_extensions=true\",\"--enable_output_generated_sdk=true\"],\"optionalArgs\":[\"listen\",\"config_dir\",\"enable_output_schema_extensions\",\"enable_output_generated_sdk\"],\"joinArgs\":true,\"shell\":false,\"port\":9399}"}}
+[info] i  dataconnect: Data Connect Emulator logging to dataconnect-debug.log {"metadata":{"emulator":{"name":"dataconnect"},"message":"Data Connect Emulator logging to \u001b[1mdataconnect-debug.log\u001b[22m"}}
+[debug] [2025-12-04T20:36:40.197Z] E1204 17:36:40.186342   19160 dev.go:82] Failed to load initial config from "c:\\Projetos\\EasyFarm\\easyfarm\\dataconnect": could not find dataconnect.yaml in `c:\Projetos\EasyFarm\easyfarm\dataconnect`
+ {"metadata":{"emulator":{"name":"dataconnect"},"message":"E1204 17:36:40.186342   19160 dev.go:82] Failed to load initial config from \"c:\\\\Projetos\\\\EasyFarm\\\\easyfarm\\\\dataconnect\": could not find dataconnect.yaml in `c:\\Projetos\\EasyFarm\\easyfarm\\dataconnect`\n"}}
+[debug] [2025-12-04T20:36:40.199Z] E1204 17:36:40.197879   19160 watch.go:102] watchAllDir unable to walk dir `c:\Projetos\EasyFarm\easyfarm\dataconnect`: CreateFile c:\Projetos\EasyFarm\easyfarm\dataconnect: O sistema não pode encontrar o arquivo especificado.
+ {"metadata":{"emulator":{"name":"dataconnect"},"message":"E1204 17:36:40.197879   19160 watch.go:102] watchAllDir unable to walk dir `c:\\Projetos\\EasyFarm\\easyfarm\\dataconnect`: CreateFile c:\\Projetos\\EasyFarm\\easyfarm\\dataconnect: O sistema não pode encontrar o arquivo especificado.\n"}}
+[debug] [2025-12-04T20:36:40.221Z] I1204 17:36:40.206491   19160 dev.go:105] Listening on address (HTTP + gRPC): 127.0.0.1:50001
+ {"metadata":{"emulator":{"name":"dataconnect"},"message":"I1204 17:36:40.206491   19160 dev.go:105] Listening on address (HTTP + gRPC): 127.0.0.1:50001\n"}}
+[debug] [2025-12-04T20:36:40.469Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-04T20:36:40.470Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-04T20:36:40.498Z] [Firebase Plugin] User found:  reynnerdutra19@gmail.com
+[info] [Firebase Plugin] (Core:Project) New user detected, fetching projects
+[debug] [2025-12-04T20:36:40.499Z] Checked if tokens are valid: true, expires at: 1764884199470
+[debug] [2025-12-04T20:36:40.500Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=1000
+[error] [Firebase Plugin] error:  {}
+[debug] [2025-12-04T20:36:41.312Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2025-12-04T20:36:41.313Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
