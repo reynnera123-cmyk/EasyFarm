@@ -1,0 +1,172 @@
+/* =========================================================
+   🟩 TAILWIND IMPORT
+========================================================= */
+@import "tailwindcss";
+
+/* =========================================================
+   🟩 BASE DO SISTEMA (NEUTRA)
+   Essas variáveis são sobrescritas pelos temas abaixo.
+========================================================= */
+
+:root {
+  --radius-card: 16px;
+  --shadow-card: 0 8px 20px rgba(15, 23, 42, 0.06);
+
+  --color-bg: #f4f5f7;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+  --color-text-main: #111827;
+  --color-text-muted: #6b7280;
+
+  --color-accent: #16a34a;
+  --color-accent-soft: #dcfce7;
+  --color-accent-strong: #15803d;
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* =========================================================
+   🟩 DARK MODE GLOBAL (BASE)
+========================================================= */
+
+html.dark {
+  --color-bg: #020617;
+  --color-surface: #0b1120;
+  --color-border: #1e293b;
+  --color-text-main: #e5e7eb;
+  --color-text-muted: #9ca3af;
+}
+
+/* =========================================================
+   🟩 TEMAS (4 opções)
+========================================================= */
+
+/* ========= 🟢 TEMA A – EASYFARM (padrão) ========= */
+
+html[data-theme="easyfarm"] {
+  --color-accent: #16a34a;
+  --color-accent-soft: #dcfce7;
+  --color-accent-strong: #15803d;
+  --color-chart-1: #16a34a;
+  --color-chart-2: #ef4444;
+}
+
+html.dark[data-theme="easyfarm"] {
+  --color-accent-soft: rgba(22, 163, 74, 0.16);
+}
+
+/* ========= 🔵 TEMA B – CORPORATE ========= */
+
+html[data-theme="corporate"] {
+  --color-accent: #2563eb;
+  --color-accent-soft: #dbeafe;
+  --color-accent-strong: #1d4ed8;
+
+  --color-chart-1: #2563eb;
+  --color-chart-2: #16a34a;
+}
+
+html.dark[data-theme="corporate"] {
+  --color-accent-soft: rgba(37, 99, 235, 0.18);
+}
+
+/* ========= 🟠 TEMA C – AGRO ========= */
+
+html[data-theme="agro"] {
+  --color-accent: #ea580c;
+  --color-accent-soft: #ffedd5;
+  --color-accent-strong: #c2410c;
+
+  --color-chart-1: #16a34a;
+  --color-chart-2: #ea580c;
+}
+
+html.dark[data-theme="agro"] {
+  --color-accent-soft: rgba(234, 88, 12, 0.18);
+}
+
+/* ========= ⚪ TEMA D – PREMIUM ========= */
+
+html[data-theme="premium"] {
+  --color-accent: #10b981;
+  --color-accent-soft: #d1fae5;
+  --color-accent-strong: #059669;
+
+  --color-chart-1: #10b981;
+  --color-chart-2: #4b5563;
+}
+
+html.dark[data-theme="premium"] {
+  --color-accent-soft: rgba(16, 185, 129, 0.18);
+}
+
+/* =========================================================
+   🟩 ESTILOS GLOBAIS DO SISTEMA
+========================================================= */
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text-main);
+  font-family: var(--font-sans);
+  letter-spacing: 0.01em;
+}
+
+/* Cards */
+.card-easy {
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  padding: 1.25rem;
+}
+
+/* Botão primário */
+.btn-primary {
+  background: var(--color-accent);
+  color: white;
+  border-radius: 999px;
+  padding: 0.6rem 1.2rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: var(--color-accent-strong);
+}
+
+/* Textos */
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+/* Inputs */
+input,
+select,
+textarea {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  color: var(--color-text-main);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px var(--color-accent);
+}
+
+/* Scrollbar bonita */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
