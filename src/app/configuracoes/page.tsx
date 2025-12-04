@@ -3,11 +3,13 @@
 import { useThemeEasyFarm } from "@/lib/theme";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
+import type { ThemeName } from "@/lib/theme";
 
 type ThemeOption = {
-  id: string;
+  id: ThemeName; // ← garante que o ID é compatível com setTheme()
   nome: string;
   descricao: string;
+  badge?: string;
 };
 
 const THEMES: ThemeOption[] = [
@@ -15,6 +17,7 @@ const THEMES: ThemeOption[] = [
     id: "easyfarm",
     nome: "EasyFarm Verde",
     descricao: "Tema oficial, baseado no verde da granja.",
+    badge: "Padrão",
   },
   {
     id: "corporate",
@@ -41,14 +44,18 @@ export default function ConfiguracoesPage() {
     <div className="min-h-screen p-6 space-y-6">
 
       {/* BOTÃO VOLTAR */}
-
+      <button
+        onClick={() => router.back()}
+        className="btn-primary text-xs flex items-center gap-1"
+      >
+        <ArrowLeft size={18} />
+        Voltar
+      </button>
 
       <h1 className="text-2xl font-bold mb-2">Configurações</h1>
       <h2 className="text-lg font-semibold">Aparência</h2>
-  
- 
 
-      {/* modo claro/escuro */}
+      {/* MODO CLARO/ESCURO */}
       <div className="card-easy p-4 mb-4 flex items-center justify-between">
         <div>
           <p className="font-medium">Modo de exibição</p>
@@ -57,19 +64,13 @@ export default function ConfiguracoesPage() {
             mas você pode alternar manualmente).
           </p>
         </div>
+
         <button onClick={toggleMode} className="btn-primary text-sm">
           Alternar para {mode === "light" ? "modo escuro" : "modo claro"}
         </button>
-                  <button
-        onClick={() => router.back()}
-        className="btn-primary text-xs flex items-center gap-1"
-      >
-        <ArrowLeft size={18} />
-        Voltar
-      </button>
       </div>
 
-      {/* escolha de tema */}
+      {/* ESCOLHA DE TEMA */}
       <div className="card-easy p-4 space-y-3">
         <p className="font-medium mb-2">Tema de cores</p>
 
@@ -78,7 +79,7 @@ export default function ConfiguracoesPage() {
             <button
               key={t.id}
               type="button"
-              onClick={() => setTheme(t.id)}
+              onClick={() => setTheme(t.id)} // ← agora funciona sem erro!
               className={`text-left border rounded-xl px-4 py-3 transition-colors ${
                 theme === t.id
                   ? "border-(--color-accent) bg-(--color-accent-soft)"
@@ -100,6 +101,7 @@ export default function ConfiguracoesPage() {
           ))}
         </div>
       </div>
+
     </div>
   );
 }
