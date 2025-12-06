@@ -1,4 +1,3 @@
-// src/app/empresa/[companyId]/galpoes/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -20,6 +19,7 @@ import {
   Timestamp,
   updateDoc,
   where,
+  deleteDoc, // ← ADICIONADO
 } from "firebase/firestore";
 
 import {
@@ -29,8 +29,7 @@ import {
   Notebook,
   ArrowRight,
 } from "@/components/icons";
-import { ArrowUDownLeftIcon, BarnIcon, BirdIcon, ChairIcon } from "@phosphor-icons/react";
-import { BalloonIcon } from "@phosphor-icons/react/dist/ssr";
+import { ArrowUDownLeftIcon, BarnIcon, BirdIcon } from "@phosphor-icons/react";
 
 
 type LoteAtivo = {
@@ -82,13 +81,71 @@ export default function GalpoesPage() {
   const [obsLote, setObsLote] = useState("");
   const [salvandoLote, setSalvandoLote] = useState(false);
 
-  // 🔒 AUTH
+  // AUTH
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
       if (!u) router.push("/login");
     });
     return () => unsub();
   }, [router]);
+async function handleSalvarGalpao(e: any) {
+    e.preventDefault();
+
+    if (!nomeGalpao) {
+      alert("Informe o nome do galpão.");
+      return;
+    }
+
+    setSalvandoGalpao(true);
+
+    try {
+      const ref = collection(db, `companies/${companyId}/galpoes`);
+      const snap = await getDocs(ref);
+      const ids = snap.docs.map((d) => d.id);
+
+      const novoId = proximoIdGalpao(ids);
+
+      await setDoc(doc(ref, novoId), {
+        nome: nomeGalpao,
+        tipo: tipoGalpao || null,
+        capacidade: Number(capacidade || 0),
+        localizacao: localizacao || null,
+        observacoes: obsGalpao || null,
+        status: "ativo",
+        criadoEm: serverTimestamp(),
+      });
+
+      setMostrarModalGalpao(false);
+      setNomeGalpao("");
+      setTipoGalpao("");
+      setCapacidade("");
+      setLocalizacao("");
+      setObsGalpao("");
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao salvar galpão.");
+    } finally {
+      setSalvandoGalpao(false);
+      location.reload();
+    }
+  }
+
+
+  // FUNÇÃO EXCLUIR GALPÃO
+  async function handleExcluirGalpao(g: GalpaoLista) {
+    const ok = confirm(`Deseja realmente excluir o galpão "${g.nome}"?`);
+    if (!ok) return;
+
+    try {
+      await deleteDoc(doc(db, `companies/${companyId}/galpoes/${g.id}`));
+      alert("Galpão excluído!");
+      location.reload();
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao excluir galpão.");
+    }
+  }
+
 
   // helpers
   function formatarData(ts: Timestamp) {
@@ -162,17 +219,12 @@ export default function GalpoesPage() {
 
       setGalpoes(listaComLotes);
 
-      // KPIs
+      // KPI
       setTotalGalpoes(listaComLotes.length);
       setGalpoesAtivos(listaComLotes.filter((g) => g.status === "ativo").length);
-      setCapacidadeTotal(
-        listaComLotes.reduce((acc, g) => acc + (g.capacidade || 0), 0)
-      );
+      setCapacidadeTotal(listaComLotes.reduce((a, g) => a + (g.capacidade || 0), 0));
       setAvesAtivas(
-        listaComLotes.reduce(
-          (acc, g) => acc + (g.loteAtual?.quantidadeAtual || 0),
-          0
-        )
+        listaComLotes.reduce((a, g) => a + (g.loteAtual?.quantidadeAtual || 0), 0)
       );
 
       setCarregando(false);
@@ -181,50 +233,7 @@ export default function GalpoesPage() {
     if (companyId) carregar();
   }, [companyId]);
 
-  // SALVAR GALPÃO
-  async function handleSalvarGalpao(e: any) {
-    e.preventDefault();
-
-    if (!nomeGalpao) {
-      alert("Informe o nome do galpão.");
-      return;
-    }
-
-    setSalvandoGalpao(true);
-
-    try {
-      const ref = collection(db, `companies/${companyId}/galpoes`);
-      const snap = await getDocs(ref);
-      const ids = snap.docs.map((d) => d.id);
-
-      const novoId = proximoIdGalpao(ids);
-
-      await setDoc(doc(ref, novoId), {
-        nome: nomeGalpao,
-        tipo: tipoGalpao || null,
-        capacidade: Number(capacidade || 0),
-        localizacao: localizacao || null,
-        observacoes: obsGalpao || null,
-        status: "ativo",
-        criadoEm: serverTimestamp(),
-      });
-
-      setMostrarModalGalpao(false);
-      setNomeGalpao("");
-      setTipoGalpao("");
-      setCapacidade("");
-      setLocalizacao("");
-      setObsGalpao("");
-    } catch (err) {
-      console.error(err);
-      alert("Erro ao salvar galpão.");
-    } finally {
-      setSalvandoGalpao(false);
-      location.reload();
-    }
-  }
-
-  // ABRIR MODAL DE LOTE
+  // ABRIR MODAL LOTE
   function abrirGerenciarLote(g: GalpaoLista) {
     setGalpaoSelecionado(g);
 
@@ -247,7 +256,7 @@ export default function GalpoesPage() {
 
     const qtd = Number(qtdInicial);
     if (!qtd || qtd <= 0) {
-      alert("Quantidade inicial inválida.");
+      alert("Quantidade inválida.");
       return;
     }
 
@@ -262,11 +271,12 @@ export default function GalpoesPage() {
         `companies/${companyId}/galpoes/${galpaoSelecionado.id}/lotes`
       );
       const snap = await getDocs(lotesRef);
-      const codigo = `${galpaoSelecionado.id}-L${String(
-        snap.size + 1
-      ).padStart(2, "0")}-${new Date().getFullYear()}`;
+      const codigo = `${galpaoSelecionado.id}-L${String(snap.size + 1).padStart(
+        2,
+        "0"
+      )}-${new Date().getFullYear()}`;
 
-      // ENCERRA LOTE ATUAL (se existir)
+      // ENCERRAR LOTE ATUAL
       if (galpaoSelecionado.loteAtual) {
         const loteRef = doc(
           db,
@@ -305,7 +315,7 @@ export default function GalpoesPage() {
     }
   }
 
-  // ENCERRAR LOTE
+  // ENCERRAR LOTE ATUAL
   async function encerrarLoteAtual() {
     if (!galpaoSelecionado?.loteAtual) return;
 
@@ -363,14 +373,13 @@ export default function GalpoesPage() {
           >
             Mortalidade <BirdIcon size={14} />
           </Link>
+
           <button
-  onClick={() => router.back()}
-  className="btn-primary text-xs flex items-center gap-1"
->
-  Voltar <ArrowUDownLeftIcon size={14} />
-</button>
-
-
+            onClick={() => router.back()}
+            className="btn-primary text-xs flex items-center gap-1"
+          >
+            Voltar <ArrowUDownLeftIcon size={14} />
+          </button>
         </div>
       </header>
 
@@ -399,13 +408,14 @@ export default function GalpoesPage() {
 
       {/* LISTA */}
       <section className="space-y-3">
-                  <button
-            onClick={() => setMostrarModalGalpao(true)}
-            className="btn-primary text-xs flex items-center gap-1"
-          >
-            <PlusCircle size={14} />
-            Novo galpão
-          </button>
+        <button
+          onClick={() => setMostrarModalGalpao(true)}
+          className="btn-primary text-xs flex items-center gap-1"
+        >
+          <PlusCircle size={14} />
+          Novo galpão
+        </button>
+
         {galpoes.map((g) => (
           <div
             key={g.id}
@@ -448,29 +458,24 @@ export default function GalpoesPage() {
                     {g.loteAtual.quantidadeAtual}
                   </p>
                   {g.loteAtual.observacoes && (
-                    <p className="text-muted">
-                      Obs.: {g.loteAtual.observacoes}
-                    </p>
+                    <p className="text-muted">Obs.: {g.loteAtual.observacoes}</p>
                   )}
                 </div>
               ) : (
-                <p className="text-[11px] text-muted">
-                  Nenhum lote ativo neste galpão.
-                </p>
+                <p className="text-[11px] text-muted">Nenhum lote ativo neste galpão.</p>
               )}
             </div>
 
             {/* DIREITA */}
             <div className="flex flex-col gap-2 min-w-[160px]">
               <button
-  type="button"
-  className="btn-primary text-xs flex items-center justify-center gap-1"
-  onClick={() => abrirGerenciarLote(g)}
->
-  <Notebook size={14} />
-  Gerenciar lote
-</button>
-
+                type="button"
+                className="btn-primary text-xs flex items-center justify-center gap-1"
+                onClick={() => abrirGerenciarLote(g)}
+              >
+                <Notebook size={14} />
+                Gerenciar lote
+              </button>
 
               <Link
                 href={`/empresa/${companyId}/racao?galpao=${g.id}`}
@@ -485,6 +490,14 @@ export default function GalpoesPage() {
               >
                 Mortalidade <ArrowRight size={12} />
               </Link>
+
+              {/* 🔥 ADICIONADO: BOTÃO DE EXCLUIR GALPÃO */}
+              <button
+                onClick={() => handleExcluirGalpao(g)}
+                className="btn-secondary text-xs flex items-center justify-center gap-1 text-red-600"
+              >
+                Excluir galpão
+              </button>
             </div>
           </div>
         ))}
@@ -630,7 +643,9 @@ export default function GalpoesPage() {
                   </button>
                 )}
 
-                <button type="button" className="text-xs underline text-muted"
+                <button
+                  type="button"
+                  className="text-xs underline text-muted"
                   onClick={() => setGalpaoSelecionado(null)}
                 >
                   Cancelar
